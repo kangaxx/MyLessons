@@ -13,8 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    dnmodel.cpp \
+    dndao.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    dnmodel.h \
+    dndao.h
 
 FORMS    += mainwindow.ui
