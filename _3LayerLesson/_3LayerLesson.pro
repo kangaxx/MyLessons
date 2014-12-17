@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,10 +15,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     dnmodel.cpp \
-    dndao.cpp
+    dndao.cpp \
+    dnserver.cpp
 
 HEADERS  += mainwindow.h \
     dnmodel.h \
-    dndao.h
+    dndao.h \
+    dnserver.h
 
 FORMS    += mainwindow.ui

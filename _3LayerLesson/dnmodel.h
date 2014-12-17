@@ -3,6 +3,7 @@
 #include <QAbstractTableModel>
 
 #include "dndao.h"
+
 class DnInterfaceModel
 {
 public:
@@ -11,12 +12,11 @@ public:
 };
 
 
-class DnTableModel :public DnInterfaceModel ,QAbstractTableModel
+class DnTableModel :public DnInterfaceModel ,public QAbstractTableModel
 {
 public:
     DnTableModel(QObject *parent=0);
     void SetValues(DnInterfaceDao *t);
-    void SetHeaders();
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
