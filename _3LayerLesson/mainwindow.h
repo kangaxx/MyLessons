@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <dnmodel.h>
 #include <dndao.h>
+#include <sqlfunctions.h>
 
 namespace Ui {
 class MainWindow;
