@@ -19,8 +19,7 @@ public:
 class DnStudentServer:public DnInterfaceServer
 {
 public:
-    DnStudentServer();
-
+    DnStudentServer(FSqlFactory *f);
     ~DnStudentServer();
     bool AppendRecord(DnInterfaceDao *dao);
 private:

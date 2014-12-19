@@ -10,8 +10,14 @@ DnInterfaceServer::~DnInterfaceServer()
 
 
 
+DnStudentServer::DnStudentServer(FSqlFactory *f)
+{
+    if (this->m_pSqlfct)
+        delete m_pSqlfct;
+    m_pSqlfct = f;
+}
 
-DnStudentServer::DnStudentServer()
+DnStudentServer::~DnStudentServer()
 {
 
 }
