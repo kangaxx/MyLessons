@@ -51,9 +51,26 @@ enum eCGFlagType{
     CG_FLAG_NONE = -1
 };
 
-struct DCodeMacro{
-    string CMName;
-    string CMValue;
+enum eCGMacroType{
+    CG_MACRO_Normal = 1,
+    CG_MACRO_Multi = 2
+};
+
+class DCodeMacro{
+public:
+    DCodeMacro();
+    DCodeMacro(string name, string value);
+    DCodeMacro(string name, string value, eCGMacroType type);
+    string GetName();
+    string GetValue();
+    void SetName(string name);
+    void SetValue(string value);
+    void SetName(const char* name);
+    void SetValue(const char* value);
+private:
+    string m_Name;
+    string m_Value;
+    eCGMacroType m_Type;
 };
 
 class DIfTemplate{
@@ -61,6 +78,8 @@ public:
     virtual ~DIfTemplate()=0;
     virtual DIfTemplate& operator=(DIfTemplate& right)=0;
     virtual void GetTemplateName(char *tempName)=0;
+    virtual string GetUpdatedCodes(const char* fileName,DCodeMacro cm[], int macroNum)=0;
+    virtual string GetUpdatedCodes(int srcBlockId, DCodeMacro cm[], int macroNum)=0;
 };
 
 class DCppTemplate:public DIfTemplate{
@@ -72,7 +91,7 @@ public:
     virtual ~DCppTemplate();
 
     virtual void GetTemplateName(char *tempName);
-    virtual DIfTemplate& operator=(DIfTemplate& right);
+    virtual DIfTemplate &operator=(DIfTemplate& right);
     vector<string> GetCodesFileName();
     vector<string> GetMacroName();
     struct stc_Flag{
@@ -85,12 +104,13 @@ public:
     int GetSourceBlockNum();
     vector<string> GetFileList();
 
-    string UpdateMacro(DCodeMacro cm[], int macroNum);
-
+    virtual string GetUpdatedCodes(const char *fileName,DCodeMacro cm[], int macroNum);
+    virtual string GetUpdatedCodes(int srcBlockId, DCodeMacro cm[], int macroNum);
 private:
     char* mp_TemplateContains;
     int m_ContainSize;
     bool m_HaveFileNameFlag;
+    FILE *mp_File;
     vector<stc_Flag> FindFlags(const char* source, const char *tagLeft, const char *tagRight, int srcSize, int tagSize);
     eCGFlagType GetFlagType(string flagStr);
     vector<stc_Flag> FindSource();
@@ -99,21 +119,26 @@ private:
     vector<stc_Flag> FindMacroFlag(vector<stc_Flag> allFlag);
     vector<stc_Flag> FindFomuleFlag(vector<stc_Flag> allFlag);
 
-    bool CheckFlagSequence(vector<DCppTemplate::stc_Flag> allFlag);
-    string RemoveFlagTag(string tagStr, int tagSize);
 
+    bool CheckFlagSequence(vector<DCppTemplate::stc_Flag> allFlag);
+    bool CheckContain();
+    string RemoveFlagTag(string tagStr, int tagSize);
+    int GetBlockSequenceByFile(const char *fileName);
 };
 
 class DIfCodeFile{
 public:
     virtual ~DIfCodeFile()=0;
-    virtual DIfCodeFile& operator=(DIfCodeFile& right)=0;
-    virtual void GetFileName(char *fName[],int fileNum)=0;
+    virtual bool InsertCodes(const char* Codes)=0;
 };
 
-class DCppCodeFile{
+class DCppCodeFile:public DIfCodeFile{
 public:
+    DCppCodeFile(const char *fileName);
     ~DCppCodeFile();
+    virtual bool InsertCodes(const char *Codes);
+private:
+    FILE *mp_File;
 };
 
 

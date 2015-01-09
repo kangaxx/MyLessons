@@ -117,11 +117,11 @@ string UpdateMacro(string source, DCodeMacro cm[], int MacroNum)
     {
         for (int i = 0; i < MacroNum; i++)
         {
-            if (RemoveFlagTag(tf.Contain,STR_CGFLAG_FLAGTYPE_END.length()) == cm[i].CMName)
+            if (RemoveFlagTag(tf.Contain,STR_CGFLAG_FLAGTYPE_END.length()) == cm[i].GetName())
             {
                 cout << "bp:" << tf.beginPos << " and ep:" << tf.endPos << endl;
                 result += source.substr(copyPos,tf.beginPos-copyPos);
-                result += cm[i].CMValue;
+                result += cm[i].GetValue();
                 copyPos = tf.endPos;
             }
         }
@@ -134,46 +134,54 @@ string UpdateMacro(string source, DCodeMacro cm[], int MacroNum)
 
 int main()
 {
+    try
+    {
+        FILE *f;
+        f = fopen("/home/gxx/Codes/svndb/files/test.txt","r");
+        if (!f)
+            cout << "fopen error!" << endl;
+        //    DCppTemplate cpp(f);
+        DIfTemplate *x;
+        x = new DCppTemplate(f);
 
-    FILE *f;
-    f = fopen("/home/gxx/Codes/svndb/files/test.txt","r");
-    if (!f)
-        cout << "fopen error!" << endl;
-    DCppTemplate cpp(f);
+        //    char c;
+        //    int n = 0;
 
-//    char c;
-//    int n = 0;
+        //    char *x = new char[INT_MAX_TEMPLATESIZE];
+        //    int t = fread(x,sizeof(char),INT_MAX_TEMPLATESIZE,f);
+        //    string test(x);
+        //    cout << "file contain is : " << test;
 
-//    char *x = new char[INT_MAX_TEMPLATESIZE];
-//    int t = fread(x,sizeof(char),INT_MAX_TEMPLATESIZE,f);
-//    string test(x);
-//    cout << "file contain is : " << test;
+        //    char cl[3] = "/*";
+        //    char cr[3] = "*/";
 
-//    char cl[3] = "/*";
-//    char cr[3] = "*/";
+        //    vector<DCppTemplate::stc_Flag> dc = sFindString(x,cl,cr,t,sizeof(cr));
+        //    for (auto dct : dc)
+        //    {
+        //        int x = GetFlagType(dct.Contain);
+        //        cout << dct.Contain << " type is :" << x << endl;
 
-//    vector<DCppTemplate::stc_Flag> dc = sFindString(x,cl,cr,t,sizeof(cr));
-//    for (auto dct : dc)
-//    {
-//        int x = GetFlagType(dct.Contain);
-//        cout << dct.Contain << " type is :" << x << endl;
-
-//        cout << "flag after RemoveTag: " << RemoveFlagTag(dct.Contain,2) << endl;
-//    }
-//                0123456789012345678901234567890123456789012345678901234567890123456789
-//    string test= "/*<mSomebody/>*/ have /*<mNum/>*/ /*<mSomething/>*/. /*<mSomebody/>*/ is a good boy.";
-//    string test = "/*<mSomebody/>*//*<mNum/>*/ have /*<xNum/>*/ /*<mSomething/>*/.\n /*<mSomebody/>*/ is a good boy. ";
-    DCodeMacro cm[3];
-    cm[0].CMName = "Something";
-    cm[0].CMValue = "Book";
-    cm[1].CMName = "Somebody";
-    cm[1].CMValue = "Tom";
-    cm[2].CMName = "Num";
-    cm[2].CMValue = "3";
-    cout << "update!" << endl;
-//    cout << UpdateMacro(test,cm,3)+ "ed" << endl;
-    cout << cpp.UpdateMacro(cm,3) << "ed" << endl;
-
-    return 0;
+        //        cout << "flag after RemoveTag: " << RemoveFlagTag(dct.Contain,2) << endl;
+        //    }
+        //                0123456789012345678901234567890123456789012345678901234567890123456789
+        //    string test= "/*<mSomebody/>*/ have /*<mNum/>*/ /*<mSomething/>*/. /*<mSomebody/>*/ is a good boy.";
+        //    string test = "/*<mSomebody/>*//*<mNum/>*/ have /*<xNum/>*/ /*<mSomething/>*/.\n /*<mSomebody/>*/ is a good boy. ";
+        DCodeMacro cm[3];
+        cm[0].SetName("Something");
+        cm[0].SetValue("Book");
+        cm[1].SetName("Somebody");
+        cm[1].SetValue("Tom");
+        cm[2].SetName("Num");
+        cm[2].SetValue("3");
+        cout << "update!" << endl;
+        //    cout << UpdateMacro(test,cm,3)+ "ed" << endl;
+        cout << x->GetUpdatedCodes(0,cm,3) << "ed" << endl;
+        delete x;
+        return 0;
+    }
+    catch(const char* err)
+    {
+        cout << err << endl;
+    }
 }
 

@@ -66,10 +66,12 @@ DCppTemplate::DCppTemplate(char *tempName)
     this->mp_TemplateContains = new char[INT_MAX_TEMPLATESIZE];
     m_ContainSize  = fread(this->mp_TemplateContains,sizeof(char),INT_MAX_TEMPLATESIZE,fp);
     m_HaveFileNameFlag = false;
+    mp_File = fp;
 }
 
 DCppTemplate::DCppTemplate(FILE *fp)
 {
+    mp_File = 0; //file was opened out of class;
     if (!fp)
         throw "Construct DCppTemplate fail, File *fp is Null";
 
@@ -89,17 +91,21 @@ DCppTemplate::DCppTemplate(DCppTemplate &other)
         this->m_ContainSize = 0;
         this->mp_TemplateContains = 0;
         this->m_HaveFileNameFlag = false;
+        this->mp_File = 0;
     }
     else
     {
         this->m_ContainSize = other.m_ContainSize;
         this->mp_TemplateContains = new char[other.m_ContainSize];
         this->m_HaveFileNameFlag = other.m_HaveFileNameFlag;
+        this->mp_File = 0;
     }
 }
 
 DCppTemplate::~DCppTemplate()
 {
+    if (mp_File != 0)
+        delete mp_File;
     this->m_ContainSize =0;
     delete [] this->mp_TemplateContains;
 }
@@ -113,6 +119,7 @@ DIfTemplate &DCppTemplate::operator=(DIfTemplate &right)
 {
     if (this == &right)
         return *this;
+    return right;
 
 }
 
@@ -131,6 +138,8 @@ int DCppTemplate::GetSourceBlockNum()
 vector<string> DCppTemplate::GetFileList()
 {
     vector<string> result;
+    if (!m_HaveFileNameFlag)
+        return result;  //no file name!
     for (auto fileStc : FindFileName())
     {
         if (fileStc.Contain.length() > 0)
@@ -139,17 +148,32 @@ vector<string> DCppTemplate::GetFileList()
     return result;
 }
 
-string DCppTemplate::UpdateMacro(DCodeMacro cm[], int macroNum)
+string DCppTemplate::GetUpdatedCodes(const char *fileName,DCodeMacro cm[], int macroNum)
 {
-    string source = this->mp_TemplateContains;
     string result;
-    int i = 0;
-    vector<DCppTemplate::stc_Flag> allFlag;
-    char cl[3] = "/*";
-    char cr[3] = "*/";
-    allFlag = FindFlags(source.c_str(),cl,cr,source.length(),sizeof(cr));
+    if (!CheckContain())
+        throw "Template is error , pls check it careful!";
+    vector<stc_Flag> codeBlockList = FindSource();
+    int seq = GetBlockSequenceByFile(fileName);
+    result = GetUpdatedCodes(seq,cm,macroNum);
+    return result;
+}
+
+string DCppTemplate::GetUpdatedCodes(int srcBlockId, DCodeMacro cm[], int macroNum)
+{
+    string result;
+    if (!CheckContain())
+        throw "Template is error , pls check it careful!";
+    vector<stc_Flag> codeBlockList = FindSource();
+
+    if (srcBlockId < 0 || srcBlockId >= codeBlockList.size())
+        throw "BlockId error !";
+    string source = codeBlockList[srcBlockId].Contain;
+
+    vector<stc_Flag> srcFlags;
+    srcFlags = FindFlags(source.c_str(),STR_CGFLAG_BEGIN.c_str(),STR_CGFLAG_END.c_str(),source.length(),STR_CGFLAG_END.length()+1);
     vector<DCppTemplate::stc_Flag> macroFlag;
-    macroFlag = FindMacroFlag(allFlag);
+    macroFlag = FindMacroFlag(srcFlags);
     if (!CheckFlagSequence(macroFlag))
         return source;
     int copyPos = 0;
@@ -157,10 +181,10 @@ string DCppTemplate::UpdateMacro(DCodeMacro cm[], int macroNum)
     {
         for (int i = 0; i < macroNum; i++)
         {
-            if (RemoveFlagTag(tf.Contain,STR_CGFLAG_FLAGTYPE_END.length()) == cm[i].CMName)
+            if (RemoveFlagTag(tf.Contain,STR_CGFLAG_FLAGTYPE_END.length()) == cm[i].GetName())
             {
                 result += source.substr(copyPos,tf.beginPos-copyPos);
-                result += cm[i].CMValue;
+                result += cm[i].GetValue();
                 copyPos = tf.endPos;
             }
         }
@@ -195,12 +219,14 @@ vector<DCppTemplate::stc_Flag> DCppTemplate::FindFlags(const char *source, const
         }
         else if (strncmp(&source[i],tagRight,tagSize-1)==0)
         {
+
             if (b >= 0 && b < i)
             {
                 DCppTemplate::stc_Flag temp;
                 e = i+tagSize-1;
                 flagStr = new char[e-b+1];
                 memcpy(flagStr,&source[b],e-b);
+
                 flagStr[e-b] ='\0';
                 temp.Contain = RemoveFlagTag(flagStr,tagSize-1);
                 temp.beginPos = b;
@@ -240,14 +266,15 @@ eCGFlagType DCppTemplate::GetFlagType(string flagStr)
 vector<DCppTemplate::stc_Flag> DCppTemplate::FindSource()
 {
     vector<DCppTemplate::stc_Flag> result;
-    result = FindFlags(this->mp_TemplateContains,STR_CGFLAG_SOURCE_BEGIN.c_str(),STR_CGFLAG_SOURCE_END.c_str(),STR_CGFLAG_SOURCE_END.length()+1,this->m_ContainSize);
+    result = FindFlags(mp_TemplateContains,STR_CGFLAG_SOURCE_BEGIN.c_str(),STR_CGFLAG_SOURCE_END.c_str(),this->m_ContainSize,STR_CGFLAG_SOURCE_END.length()+1);
     return result;
 }
 
 vector<DCppTemplate::stc_Flag> DCppTemplate::FindFileName()
 {
     vector<DCppTemplate::stc_Flag> result;
-    result = FindFlags(this->mp_TemplateContains,STR_CGFLAG_FILE_BEGIN.c_str(),STR_CGFLAG_FILE_END.c_str(),STR_CGFLAG_FILE_END.length()+1,this->m_ContainSize);
+
+    result = FindFlags(mp_TemplateContains,STR_CGFLAG_FILE_BEGIN.c_str(),STR_CGFLAG_FILE_END.c_str(),this->m_ContainSize,STR_CGFLAG_FILE_END.length()+1);
     return result;
 }
 
@@ -286,6 +313,19 @@ bool DCppTemplate::CheckFlagSequence(vector<DCppTemplate::stc_Flag> allFlag)
     return true;
 }
 
+bool DCppTemplate::CheckContain()
+{
+    if (GetSourceBlockNum() <= 0)
+        return false;
+
+    if (m_HaveFileNameFlag)
+    {
+        if (GetFileList().size() != GetSourceBlockNum())
+            return false;
+    }
+    return true;
+}
+
 
 
 string DCppTemplate::RemoveFlagTag(string tagStr, int tagSize)
@@ -295,4 +335,90 @@ string DCppTemplate::RemoveFlagTag(string tagStr, int tagSize)
     return tagStr;
 }
 
+int DCppTemplate::GetBlockSequenceByFile(const char *fileName)
+{
+    vector<string> fileNameList;
+    fileNameList = GetFileList();
+    for(int i=0 ; i < fileNameList.size() ; i++)
+    {
+        if (fileNameList[i] == fileName)
+            return i;
+    }
+    return -1;
+}
 
+
+
+
+
+DCppCodeFile::DCppCodeFile(const char *fileName)
+{
+    this->mp_File = new FILE;
+    mp_File = fopen(fileName,"rw");
+}
+
+DCppCodeFile::~DCppCodeFile()
+{
+
+}
+
+bool DCppCodeFile::InsertCodes(const char *Codes)
+{
+    return true;
+}
+
+
+DIfCodeFile::~DIfCodeFile()
+{
+    //do nothing yet
+}
+
+
+DCodeMacro::DCodeMacro()
+{
+    this->m_Type = CG_MACRO_Normal;
+}
+
+DCodeMacro::DCodeMacro(string name, string value)
+{
+    this->m_Name = name;
+    this->m_Value = value;
+    this->m_Type = CG_MACRO_Normal;
+}
+
+DCodeMacro::DCodeMacro(string name, string value, eCGMacroType type)
+{
+    this->m_Name = name;
+    this->m_Value = value;
+    this->m_Type = type;
+}
+
+string DCodeMacro::GetName()
+{
+    return m_Name;
+}
+
+string DCodeMacro::GetValue()
+{
+    return m_Value;
+}
+
+void DCodeMacro::SetName(string name)
+{
+    this->m_Name = name;
+}
+
+void DCodeMacro::SetValue(string value)
+{
+    this->m_Value = value;
+}
+
+void DCodeMacro::SetName(const char *name)
+{
+    this->m_Name = name;
+}
+
+void DCodeMacro::SetValue(const char *value)
+{
+    this->m_Value = value;
+}
