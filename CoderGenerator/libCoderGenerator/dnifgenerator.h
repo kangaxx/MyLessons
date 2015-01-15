@@ -98,6 +98,7 @@ public:
         string Contain;
         int beginPos;
         int endPos;
+        stc_Flag(){Contain = ""; beginPos = -1; endPos = -1;}
     };
 
     void SetHaveFile(bool value){this->m_HaveFileNameFlag = value;}
@@ -111,7 +112,8 @@ private:
     int m_ContainSize;
     bool m_HaveFileNameFlag;
     FILE *mp_File;
-    vector<stc_Flag> FindFlags(const char* source, const char *tagLeft, const char *tagRight, int srcSize, int tagSize);
+    stc_Flag FindMacroByName(const char *source, string macroName, int srcSize, int i = 0); //to find macro by macro num , seqNo means start char num , if seqno more zhan srcSize, will return null stc_Flag
+    vector<stc_Flag> FindFlags(const char *source, const char *tagLeft, const char *tagRight, int srcSize, int tagSize); //find all flags in file ,for check template correctable;
     eCGFlagType GetFlagType(string flagStr);
     vector<stc_Flag> FindSource();
     vector<stc_Flag> FindFileName();

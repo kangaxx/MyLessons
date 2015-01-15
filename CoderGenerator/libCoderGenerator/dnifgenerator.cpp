@@ -161,7 +161,7 @@ string DCppTemplate::GetUpdatedCodes(const char *fileName,DCodeMacro cm[], int m
 
 string DCppTemplate::GetUpdatedCodes(int srcBlockId, DCodeMacro cm[], int macroNum)
 {
-    string result;
+
     if (!CheckContain())
         throw "Template is error , pls check it careful!";
     vector<stc_Flag> codeBlockList = FindSource();
@@ -169,28 +169,60 @@ string DCppTemplate::GetUpdatedCodes(int srcBlockId, DCodeMacro cm[], int macroN
     if (srcBlockId < 0 || srcBlockId >= codeBlockList.size())
         throw "BlockId error !";
     string source = codeBlockList[srcBlockId].Contain;
-
-    vector<stc_Flag> srcFlags;
-    srcFlags = FindFlags(source.c_str(),STR_CGFLAG_BEGIN.c_str(),STR_CGFLAG_END.c_str(),source.length(),STR_CGFLAG_END.length()+1);
-    vector<DCppTemplate::stc_Flag> macroFlag;
-    macroFlag = FindMacroFlag(srcFlags);
-    if (!CheckFlagSequence(macroFlag))
-        return source;
-    int copyPos = 0;
-    for (auto tf : macroFlag)
+    stc_Flag fgTemp;
+    for (int i = 0;i < macroNum; i++)
     {
-        for (int i = 0; i < macroNum; i++)
+        int j = 0;
+        for (; j< source.length();)
         {
-            if (RemoveFlagTag(tf.Contain,STR_CGFLAG_FLAGTYPE_END.length()) == cm[i].GetName())
-            {
-                result += source.substr(copyPos,tf.beginPos-copyPos);
-                result += cm[i].GetValue();
-                copyPos = tf.endPos;
-            }
+            fgTemp = FindMacroByName(source.c_str(),cm[i].GetName(),source.length(),j);
+            if (fgTemp.beginPos < 0)
+                break;
+            source.insert(fgTemp.endPos,cm[i].GetValue());
+            j = fgTemp.endPos + cm[i].GetValue().length();
+        }
+
+    }
+    return source;
+//    vector<stc_Flag> srcFlags;
+//    srcFlags = FindFlags(source.c_str(),STR_CGFLAG_BEGIN.c_str(),STR_CGFLAG_END.c_str(),source.length(),STR_CGFLAG_END.length()+1);
+//    vector<DCppTemplate::stc_Flag> macroFlag;
+//    macroFlag = FindMacroFlag(srcFlags);
+//    if (!CheckFlagSequence(macroFlag))
+//        return source;
+//    int copyPos = 0;
+//    for (auto tf : macroFlag)
+//    {
+//        for (int i = 0; i < macroNum; i++)
+//        {
+
+//            if (RemoveFlagTag(tf.Contain,STR_CGFLAG_FLAGTYPE_END.length()) == cm[i].GetName())
+//            {
+//                result += source.substr(copyPos,tf.beginPos-copyPos);
+//                result += cm[i].GetValue();
+//                copyPos = tf.endPos;
+//            }
+//        }
+//    }
+//    result += source.substr(copyPos,source.length() - copyPos);
+}
+
+DCppTemplate::stc_Flag DCppTemplate::FindMacroByName(const char *source, string macroName, int srcSize, int i)
+{
+    stc_Flag result;
+    if (i < 0 || i >= srcSize)
+        return result;
+    string target = STR_CGFLAG_BEGIN + STR_CGFLAG_MACRO_BEGIN + macroName + STR_CGFLAG_FLAGTYPE_END + STR_CGFLAG_END;
+    for (;i<srcSize;i++)
+    {
+        if (strncmp(&source[i],target.c_str(),target.length()) == 0)
+        {
+            result.Contain = macroName;
+            result.beginPos = i;
+            result.endPos = i+target.length();
+            return result;
         }
     }
-    result += source.substr(copyPos,source.length() - copyPos);
-    return result;
 }
 
 vector<DCppTemplate::stc_Flag> DCppTemplate::FindFlags(const char *source, const char *tagLeft, const char *tagRight, int srcSize , int tagSize)
