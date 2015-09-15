@@ -9,7 +9,8 @@ TARGET = commonfunction_c
 DESTDIR = ../../lib
 
 SOURCES += main.cpp \
-    commonfunction_c.cpp
+    commonfunction_c.cpp\
+    clscli.cpp
 
 HEADERS += \
     commonfunction_c.h

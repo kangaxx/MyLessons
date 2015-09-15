@@ -296,5 +296,101 @@ int BaseFunctions::strcmp_nonsafe(const char *c1, const char *c2)
         return rst; //c2 include c1
 }
 
+template<class T>
+int DuLink<T>::size(){
+    int count = 0;
+    for (Node *p=head->next;p!= head;p=p->next)
+        count ++;
+    return count;
+}
+
+
+template<class T>
+void DuLink<T>::insertElement(T element, int pos){
+    assert(pos > 0 && pos <= size()+1);
+    Node *p = head;
+    while(pos-- != 0)
+        p=p->next;
+    new Node(element,p->prior,p);
+
+}
+
+template<class T>
+T &DuLink<T>::getElement(int idx){
+    assert(idx>= 0 && idx<size());
+    Node *p = head->next;
+    while(idx-- != 0)
+        p=p->next;
+    return p->data;
+}
+
+template<class T>
+T &DuLink<T>::operator [](int idx){
+    return getElement(idx);
+}
+
+template<class T>
+void DuLink<T>::clearAllElement(){
+    Node *t,*p;
+    p = head->next;
+    while(p != head){
+        t = p->next;
+        delete p;
+        p = t;
+    }
+}
+
+template<class T>
+T DuLink<T>::delElement(int idx){
+    assert(idx >= 0 && idx < size());
+    Node *t = head->next;
+    while(idx-- != 0)
+        t = t->next;
+    t->prior->next = t->next;
+    t->next->prior = t->prior;
+    T ret = t->data;
+    delete t;
+    return ret;
+}
+
+template<class T>
+DuLink<T>::~DuLink(){
+    clearAllElement();
+    if (head != NULL){
+        delete head;
+        head = NULL;
+    }
+}
+
+template<class T>
+void DuLink<T>::Traverse(void (*visit)(T &element)){
+    Node *t = head->next;
+    while(t != head){
+        visit(t->data);
+        t = t->next;
+    }
+}
+
+template<class T>
+void DuLink<T>::TraverseBack(void (*visit)(T &element)){
+    Node *t = head->prior;
+    while (t != head){
+        visit(t->data);
+        t= t->prior;
+    }
+}
+
+template<class T>
+void DuLink<T>::alterElement(const T &newElement, int idx){
+    assert(idx >= 0 && idx < size());
+    Node *t = head->next;
+    while (idx-- != 0)
+        t= t->next;
+    t->data = newElement;
+    return;
+}
+
+
+
 
 
