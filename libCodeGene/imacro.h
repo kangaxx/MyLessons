@@ -73,7 +73,7 @@ public:
     IFormula(QSqlRecord &rcd){setByRecord(rcd);}
     virtual ~IFormula() = 0;
 
-    IMacro *operator =(QSqlRecord &rcd){setByRecord(rcd);}
+    IFormula *operator =(QSqlRecord &rcd){setByRecord(rcd); return this;}
     int getID(){return m_id;}
     int getPos(){return m_pos;}
     QString getName(){return m_name;}

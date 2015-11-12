@@ -20,4 +20,4 @@ HEADERS += itemplatefile.h \
     icodegenedao.h
 
 INCLUDEPATH += ../../hds
-
+LIBS += -L../lib -lSqlFunctions

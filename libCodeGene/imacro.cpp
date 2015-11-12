@@ -11,6 +11,7 @@ lcg::IMacro::IMacro(QSqlRecord &rcd)
 lcg::IMacro *lcg::IMacro::operator =(QSqlRecord &rcd)
 {
     setByRecord(rcd);
+    return this;
 }
 
 void lcg::IMacro::setByRecord(QSqlRecord &rcd)

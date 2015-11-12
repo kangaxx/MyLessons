@@ -14,11 +14,14 @@ protected:
     FSqlFactory *m_sqlptr;
 };
 
+
+//get cpp file by id
 class TemplateCPPFileDao:public ICodeGeneDao
 {
 public:
-    TemplateFileDao(FSqlFactory *sql):ICodeGeneDao(sql){this->m_fileId = INT_FIELD_ID_VALUE_ERROR;}
-    TemplateFileDao(FSqlFactory *sql,int fileId):ICodeGeneDao(sql),m_fileId(fileId){;}
+    TemplateCPPFileDao(FSqlFactory *sql):ICodeGeneDao(sql){this->m_fileId = INT_FIELD_ID_VALUE_ERROR;}
+    TemplateCPPFileDao(FSqlFactory *sql,int fileId):ICodeGeneDao(sql),m_fileId(fileId){;}
+    void setFileId(int id){this->m_fileId = id;}
     vector<ITemplateFile*> getData();
 private:
     int m_fileId;
