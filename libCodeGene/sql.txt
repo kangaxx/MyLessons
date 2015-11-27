@@ -1,0 +1,2 @@
+#create table TEMPLATEFILE
+create table TEMPLATEFILE(FileId int AUTO_INCREMENT PRIMARY KEY, FileName char(10) NOT NULL unique,FileDesc char(200), FileText varchar(4000) NOT NULL);
