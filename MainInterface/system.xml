@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configs>
+<sqlconn>
+<server>192.168.1.150</server>
+<username>coder</username>
+<password>123</password>
+<database>WorkDB</database>
+</sqlconn>
+</configs>
