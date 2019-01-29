@@ -1,0 +1,14 @@
+syntax = "proto2";
+package org.apache.metis;
+
+message LogTag
+{
+  required string Key = 1;
+  required string Value = 2;
+}
+
+message LogGroup
+{
+  optional string name = 1;
+  repeated LogTag tags = 2;
+}
