@@ -1,14 +1,20 @@
 syntax = "proto2";
-package org.apache.metis;
-
+package glx.cn.sh; 
 message LogTag
 {
-  required string Key = 1;
-  required string Value = 2;
+  required int32 Key = 1;
+  required int32 Value = 2;
+}
+
+message Site
+{
+  required string name = 1;
+  required int32 id = 2;
 }
 
 message LogGroup
 {
   optional string name = 1;
   repeated LogTag tags = 2;
+  repeated Site site = 3;
 }

@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     TestMain
  * Method:    getInfo
- * Signature: ()Linfo;
+ * Signature: (Ljava/lang/String;)Linfo;
  */
 JNIEXPORT jobject JNICALL Java_TestMain_getInfo
-  (JNIEnv *, jclass);
+  (JNIEnv *, jclass, jstring);
 
 #ifdef __cplusplus
 }

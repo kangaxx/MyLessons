@@ -3,11 +3,7 @@
 #include <iostream>
 using namespace std;
 JNIEXPORT jobject JNICALL Java_TestMain_getInfo
-  (JNIEnv *env, jclass){
-    if (env == 0)
-      cout << "env is 0" << endl;
-    else
-      cout << "env is good" << endl;
+  (JNIEnv *env, jclass clz, jstring str){
     jclass jniInfo = env->FindClass("info");
     //获取内部类
     if (jniInfo == 0) {
@@ -20,10 +16,16 @@ JNIEXPORT jobject JNICALL Java_TestMain_getInfo
       return 0;
     }
     jobject paramOut = env->NewObjectA(jniInfo, jmi, 0);
-    return paramOut;
-    //jfieldID jmiName = env->GetFieldID(jniInfo,"_name","Ljava/lang/String;");
+    const char *msg;
+    msg = env->GetStringUTFChars(str,0);
+    cout << msg << endl;
+    jfieldID jmiName = env->GetFieldID(jniInfo,"_name","Ljava/lang/String;");
+    
+    env->SetObjectField(paramOut, jmiName, str); 
     //jfieldID jmiValue = env->GetFieldID(jniInfo,"_value","Ljava/lang/String;");
-     
+    
+    return paramOut;
+
     //Get the Method ID of the constructor which takes an int    jmethodID midInit = (*env)->GetMethodID(env, cls, "<init>", "(I)V");
     //jmethodID midInit = (*env)->GetMethodID(env, cls, "<init>", "(I)V");
   }

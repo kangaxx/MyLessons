@@ -26,9 +26,9 @@
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
-namespace org {
-namespace apache {
-namespace metis {
+namespace glx {
+namespace cn {
+namespace sh {
 
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_testData_2eproto();
@@ -36,6 +36,7 @@ void protobuf_AssignDesc_testData_2eproto();
 void protobuf_ShutdownFile_testData_2eproto();
 
 class LogTag;
+class Site;
 class LogGroup;
 
 // ===================================================================
@@ -93,31 +94,21 @@ class LogTag : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string Key = 1;
+  // required int32 Key = 1;
   inline bool has_key() const;
   inline void clear_key();
   static const int kKeyFieldNumber = 1;
-  inline const ::std::string& key() const;
-  inline void set_key(const ::std::string& value);
-  inline void set_key(const char* value);
-  inline void set_key(const char* value, size_t size);
-  inline ::std::string* mutable_key();
-  inline ::std::string* release_key();
-  inline void set_allocated_key(::std::string* key);
+  inline ::google::protobuf::int32 key() const;
+  inline void set_key(::google::protobuf::int32 value);
 
-  // required string Value = 2;
+  // required int32 Value = 2;
   inline bool has_value() const;
   inline void clear_value();
   static const int kValueFieldNumber = 2;
-  inline const ::std::string& value() const;
-  inline void set_value(const ::std::string& value);
-  inline void set_value(const char* value);
-  inline void set_value(const char* value, size_t size);
-  inline ::std::string* mutable_value();
-  inline ::std::string* release_value();
-  inline void set_allocated_value(::std::string* value);
+  inline ::google::protobuf::int32 value() const;
+  inline void set_value(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:org.apache.metis.LogTag)
+  // @@protoc_insertion_point(class_scope:glx.cn.sh.LogTag)
  private:
   inline void set_has_key();
   inline void clear_has_key();
@@ -128,14 +119,108 @@ class LogTag : public ::google::protobuf::Message {
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::std::string* key_;
-  ::std::string* value_;
+  ::google::protobuf::int32 key_;
+  ::google::protobuf::int32 value_;
   friend void  protobuf_AddDesc_testData_2eproto();
   friend void protobuf_AssignDesc_testData_2eproto();
   friend void protobuf_ShutdownFile_testData_2eproto();
 
   void InitAsDefaultInstance();
   static LogTag* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Site : public ::google::protobuf::Message {
+ public:
+  Site();
+  virtual ~Site();
+
+  Site(const Site& from);
+
+  inline Site& operator=(const Site& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Site& default_instance();
+
+  void Swap(Site* other);
+
+  // implements Message ----------------------------------------------
+
+  Site* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Site& from);
+  void MergeFrom(const Site& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required string name = 1;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 1;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  inline void set_allocated_name(::std::string* name);
+
+  // required int32 id = 2;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 2;
+  inline ::google::protobuf::int32 id() const;
+  inline void set_id(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:glx.cn.sh.Site)
+ private:
+  inline void set_has_name();
+  inline void clear_has_name();
+  inline void set_has_id();
+  inline void clear_has_id();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::std::string* name_;
+  ::google::protobuf::int32 id_;
+  friend void  protobuf_AddDesc_testData_2eproto();
+  friend void protobuf_AssignDesc_testData_2eproto();
+  friend void protobuf_ShutdownFile_testData_2eproto();
+
+  void InitAsDefaultInstance();
+  static Site* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -204,19 +289,31 @@ class LogGroup : public ::google::protobuf::Message {
   inline ::std::string* release_name();
   inline void set_allocated_name(::std::string* name);
 
-  // repeated .org.apache.metis.LogTag tags = 2;
+  // repeated .glx.cn.sh.LogTag tags = 2;
   inline int tags_size() const;
   inline void clear_tags();
   static const int kTagsFieldNumber = 2;
-  inline const ::org::apache::metis::LogTag& tags(int index) const;
-  inline ::org::apache::metis::LogTag* mutable_tags(int index);
-  inline ::org::apache::metis::LogTag* add_tags();
-  inline const ::google::protobuf::RepeatedPtrField< ::org::apache::metis::LogTag >&
+  inline const ::glx::cn::sh::LogTag& tags(int index) const;
+  inline ::glx::cn::sh::LogTag* mutable_tags(int index);
+  inline ::glx::cn::sh::LogTag* add_tags();
+  inline const ::google::protobuf::RepeatedPtrField< ::glx::cn::sh::LogTag >&
       tags() const;
-  inline ::google::protobuf::RepeatedPtrField< ::org::apache::metis::LogTag >*
+  inline ::google::protobuf::RepeatedPtrField< ::glx::cn::sh::LogTag >*
       mutable_tags();
 
-  // @@protoc_insertion_point(class_scope:org.apache.metis.LogGroup)
+  // repeated .glx.cn.sh.Site site = 3;
+  inline int site_size() const;
+  inline void clear_site();
+  static const int kSiteFieldNumber = 3;
+  inline const ::glx::cn::sh::Site& site(int index) const;
+  inline ::glx::cn::sh::Site* mutable_site(int index);
+  inline ::glx::cn::sh::Site* add_site();
+  inline const ::google::protobuf::RepeatedPtrField< ::glx::cn::sh::Site >&
+      site() const;
+  inline ::google::protobuf::RepeatedPtrField< ::glx::cn::sh::Site >*
+      mutable_site();
+
+  // @@protoc_insertion_point(class_scope:glx.cn.sh.LogGroup)
  private:
   inline void set_has_name();
   inline void clear_has_name();
@@ -226,7 +323,8 @@ class LogGroup : public ::google::protobuf::Message {
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
   ::std::string* name_;
-  ::google::protobuf::RepeatedPtrField< ::org::apache::metis::LogTag > tags_;
+  ::google::protobuf::RepeatedPtrField< ::glx::cn::sh::LogTag > tags_;
+  ::google::protobuf::RepeatedPtrField< ::glx::cn::sh::Site > site_;
   friend void  protobuf_AddDesc_testData_2eproto();
   friend void protobuf_AssignDesc_testData_2eproto();
   friend void protobuf_ShutdownFile_testData_2eproto();
@@ -241,7 +339,7 @@ class LogGroup : public ::google::protobuf::Message {
 
 // LogTag
 
-// required string Key = 1;
+// required int32 Key = 1;
 inline bool LogTag::has_key() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -252,72 +350,20 @@ inline void LogTag::clear_has_key() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline void LogTag::clear_key() {
-  if (key_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    key_->clear();
-  }
+  key_ = 0;
   clear_has_key();
 }
-inline const ::std::string& LogTag::key() const {
-  // @@protoc_insertion_point(field_get:org.apache.metis.LogTag.Key)
-  return *key_;
-}
-inline void LogTag::set_key(const ::std::string& value) {
-  set_has_key();
-  if (key_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    key_ = new ::std::string;
-  }
-  key_->assign(value);
-  // @@protoc_insertion_point(field_set:org.apache.metis.LogTag.Key)
-}
-inline void LogTag::set_key(const char* value) {
-  set_has_key();
-  if (key_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    key_ = new ::std::string;
-  }
-  key_->assign(value);
-  // @@protoc_insertion_point(field_set_char:org.apache.metis.LogTag.Key)
-}
-inline void LogTag::set_key(const char* value, size_t size) {
-  set_has_key();
-  if (key_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    key_ = new ::std::string;
-  }
-  key_->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:org.apache.metis.LogTag.Key)
-}
-inline ::std::string* LogTag::mutable_key() {
-  set_has_key();
-  if (key_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    key_ = new ::std::string;
-  }
-  // @@protoc_insertion_point(field_mutable:org.apache.metis.LogTag.Key)
+inline ::google::protobuf::int32 LogTag::key() const {
+  // @@protoc_insertion_point(field_get:glx.cn.sh.LogTag.Key)
   return key_;
 }
-inline ::std::string* LogTag::release_key() {
-  clear_has_key();
-  if (key_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    return NULL;
-  } else {
-    ::std::string* temp = key_;
-    key_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-    return temp;
-  }
-}
-inline void LogTag::set_allocated_key(::std::string* key) {
-  if (key_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    delete key_;
-  }
-  if (key) {
-    set_has_key();
-    key_ = key;
-  } else {
-    clear_has_key();
-    key_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  }
-  // @@protoc_insertion_point(field_set_allocated:org.apache.metis.LogTag.Key)
+inline void LogTag::set_key(::google::protobuf::int32 value) {
+  set_has_key();
+  key_ = value;
+  // @@protoc_insertion_point(field_set:glx.cn.sh.LogTag.Key)
 }
 
-// required string Value = 2;
+// required int32 Value = 2;
 inline bool LogTag::has_value() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -328,69 +374,121 @@ inline void LogTag::clear_has_value() {
   _has_bits_[0] &= ~0x00000002u;
 }
 inline void LogTag::clear_value() {
-  if (value_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    value_->clear();
-  }
+  value_ = 0;
   clear_has_value();
 }
-inline const ::std::string& LogTag::value() const {
-  // @@protoc_insertion_point(field_get:org.apache.metis.LogTag.Value)
-  return *value_;
-}
-inline void LogTag::set_value(const ::std::string& value) {
-  set_has_value();
-  if (value_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    value_ = new ::std::string;
-  }
-  value_->assign(value);
-  // @@protoc_insertion_point(field_set:org.apache.metis.LogTag.Value)
-}
-inline void LogTag::set_value(const char* value) {
-  set_has_value();
-  if (value_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    value_ = new ::std::string;
-  }
-  value_->assign(value);
-  // @@protoc_insertion_point(field_set_char:org.apache.metis.LogTag.Value)
-}
-inline void LogTag::set_value(const char* value, size_t size) {
-  set_has_value();
-  if (value_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    value_ = new ::std::string;
-  }
-  value_->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:org.apache.metis.LogTag.Value)
-}
-inline ::std::string* LogTag::mutable_value() {
-  set_has_value();
-  if (value_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    value_ = new ::std::string;
-  }
-  // @@protoc_insertion_point(field_mutable:org.apache.metis.LogTag.Value)
+inline ::google::protobuf::int32 LogTag::value() const {
+  // @@protoc_insertion_point(field_get:glx.cn.sh.LogTag.Value)
   return value_;
 }
-inline ::std::string* LogTag::release_value() {
-  clear_has_value();
-  if (value_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+inline void LogTag::set_value(::google::protobuf::int32 value) {
+  set_has_value();
+  value_ = value;
+  // @@protoc_insertion_point(field_set:glx.cn.sh.LogTag.Value)
+}
+
+// -------------------------------------------------------------------
+
+// Site
+
+// required string name = 1;
+inline bool Site::has_name() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Site::set_has_name() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Site::clear_has_name() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Site::clear_name() {
+  if (name_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    name_->clear();
+  }
+  clear_has_name();
+}
+inline const ::std::string& Site::name() const {
+  // @@protoc_insertion_point(field_get:glx.cn.sh.Site.name)
+  return *name_;
+}
+inline void Site::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+  // @@protoc_insertion_point(field_set:glx.cn.sh.Site.name)
+}
+inline void Site::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+  // @@protoc_insertion_point(field_set_char:glx.cn.sh.Site.name)
+}
+inline void Site::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:glx.cn.sh.Site.name)
+}
+inline ::std::string* Site::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    name_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:glx.cn.sh.Site.name)
+  return name_;
+}
+inline ::std::string* Site::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     return NULL;
   } else {
-    ::std::string* temp = value_;
-    value_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
     return temp;
   }
 }
-inline void LogTag::set_allocated_value(::std::string* value) {
-  if (value_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    delete value_;
+inline void Site::set_allocated_name(::std::string* name) {
+  if (name_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete name_;
   }
-  if (value) {
-    set_has_value();
-    value_ = value;
+  if (name) {
+    set_has_name();
+    name_ = name;
   } else {
-    clear_has_value();
-    value_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    clear_has_name();
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   }
-  // @@protoc_insertion_point(field_set_allocated:org.apache.metis.LogTag.Value)
+  // @@protoc_insertion_point(field_set_allocated:glx.cn.sh.Site.name)
+}
+
+// required int32 id = 2;
+inline bool Site::has_id() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Site::set_has_id() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Site::clear_has_id() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Site::clear_id() {
+  id_ = 0;
+  clear_has_id();
+}
+inline ::google::protobuf::int32 Site::id() const {
+  // @@protoc_insertion_point(field_get:glx.cn.sh.Site.id)
+  return id_;
+}
+inline void Site::set_id(::google::protobuf::int32 value) {
+  set_has_id();
+  id_ = value;
+  // @@protoc_insertion_point(field_set:glx.cn.sh.Site.id)
 }
 
 // -------------------------------------------------------------------
@@ -414,7 +512,7 @@ inline void LogGroup::clear_name() {
   clear_has_name();
 }
 inline const ::std::string& LogGroup::name() const {
-  // @@protoc_insertion_point(field_get:org.apache.metis.LogGroup.name)
+  // @@protoc_insertion_point(field_get:glx.cn.sh.LogGroup.name)
   return *name_;
 }
 inline void LogGroup::set_name(const ::std::string& value) {
@@ -423,7 +521,7 @@ inline void LogGroup::set_name(const ::std::string& value) {
     name_ = new ::std::string;
   }
   name_->assign(value);
-  // @@protoc_insertion_point(field_set:org.apache.metis.LogGroup.name)
+  // @@protoc_insertion_point(field_set:glx.cn.sh.LogGroup.name)
 }
 inline void LogGroup::set_name(const char* value) {
   set_has_name();
@@ -431,7 +529,7 @@ inline void LogGroup::set_name(const char* value) {
     name_ = new ::std::string;
   }
   name_->assign(value);
-  // @@protoc_insertion_point(field_set_char:org.apache.metis.LogGroup.name)
+  // @@protoc_insertion_point(field_set_char:glx.cn.sh.LogGroup.name)
 }
 inline void LogGroup::set_name(const char* value, size_t size) {
   set_has_name();
@@ -439,14 +537,14 @@ inline void LogGroup::set_name(const char* value, size_t size) {
     name_ = new ::std::string;
   }
   name_->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:org.apache.metis.LogGroup.name)
+  // @@protoc_insertion_point(field_set_pointer:glx.cn.sh.LogGroup.name)
 }
 inline ::std::string* LogGroup::mutable_name() {
   set_has_name();
   if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     name_ = new ::std::string;
   }
-  // @@protoc_insertion_point(field_mutable:org.apache.metis.LogGroup.name)
+  // @@protoc_insertion_point(field_mutable:glx.cn.sh.LogGroup.name)
   return name_;
 }
 inline ::std::string* LogGroup::release_name() {
@@ -470,45 +568,75 @@ inline void LogGroup::set_allocated_name(::std::string* name) {
     clear_has_name();
     name_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   }
-  // @@protoc_insertion_point(field_set_allocated:org.apache.metis.LogGroup.name)
+  // @@protoc_insertion_point(field_set_allocated:glx.cn.sh.LogGroup.name)
 }
 
-// repeated .org.apache.metis.LogTag tags = 2;
+// repeated .glx.cn.sh.LogTag tags = 2;
 inline int LogGroup::tags_size() const {
   return tags_.size();
 }
 inline void LogGroup::clear_tags() {
   tags_.Clear();
 }
-inline const ::org::apache::metis::LogTag& LogGroup::tags(int index) const {
-  // @@protoc_insertion_point(field_get:org.apache.metis.LogGroup.tags)
+inline const ::glx::cn::sh::LogTag& LogGroup::tags(int index) const {
+  // @@protoc_insertion_point(field_get:glx.cn.sh.LogGroup.tags)
   return tags_.Get(index);
 }
-inline ::org::apache::metis::LogTag* LogGroup::mutable_tags(int index) {
-  // @@protoc_insertion_point(field_mutable:org.apache.metis.LogGroup.tags)
+inline ::glx::cn::sh::LogTag* LogGroup::mutable_tags(int index) {
+  // @@protoc_insertion_point(field_mutable:glx.cn.sh.LogGroup.tags)
   return tags_.Mutable(index);
 }
-inline ::org::apache::metis::LogTag* LogGroup::add_tags() {
-  // @@protoc_insertion_point(field_add:org.apache.metis.LogGroup.tags)
+inline ::glx::cn::sh::LogTag* LogGroup::add_tags() {
+  // @@protoc_insertion_point(field_add:glx.cn.sh.LogGroup.tags)
   return tags_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::org::apache::metis::LogTag >&
+inline const ::google::protobuf::RepeatedPtrField< ::glx::cn::sh::LogTag >&
 LogGroup::tags() const {
-  // @@protoc_insertion_point(field_list:org.apache.metis.LogGroup.tags)
+  // @@protoc_insertion_point(field_list:glx.cn.sh.LogGroup.tags)
   return tags_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::org::apache::metis::LogTag >*
+inline ::google::protobuf::RepeatedPtrField< ::glx::cn::sh::LogTag >*
 LogGroup::mutable_tags() {
-  // @@protoc_insertion_point(field_mutable_list:org.apache.metis.LogGroup.tags)
+  // @@protoc_insertion_point(field_mutable_list:glx.cn.sh.LogGroup.tags)
   return &tags_;
+}
+
+// repeated .glx.cn.sh.Site site = 3;
+inline int LogGroup::site_size() const {
+  return site_.size();
+}
+inline void LogGroup::clear_site() {
+  site_.Clear();
+}
+inline const ::glx::cn::sh::Site& LogGroup::site(int index) const {
+  // @@protoc_insertion_point(field_get:glx.cn.sh.LogGroup.site)
+  return site_.Get(index);
+}
+inline ::glx::cn::sh::Site* LogGroup::mutable_site(int index) {
+  // @@protoc_insertion_point(field_mutable:glx.cn.sh.LogGroup.site)
+  return site_.Mutable(index);
+}
+inline ::glx::cn::sh::Site* LogGroup::add_site() {
+  // @@protoc_insertion_point(field_add:glx.cn.sh.LogGroup.site)
+  return site_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::glx::cn::sh::Site >&
+LogGroup::site() const {
+  // @@protoc_insertion_point(field_list:glx.cn.sh.LogGroup.site)
+  return site_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::glx::cn::sh::Site >*
+LogGroup::mutable_site() {
+  // @@protoc_insertion_point(field_mutable_list:glx.cn.sh.LogGroup.site)
+  return &site_;
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace metis
-}  // namespace apache
-}  // namespace org
+}  // namespace sh
+}  // namespace cn
+}  // namespace glx
 
 #ifndef SWIG
 namespace google {
